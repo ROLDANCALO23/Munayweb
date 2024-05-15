@@ -1,0 +1,150 @@
+---
+
+import { Icon } from 'astro-icon/components';
+import { Image } from 'astro:assets';
+import Logo from '../assets/images/munaylogo.png';
+import Navigator from './Navigator.astro';
+
+let menuItems=[{
+    name: 'Nosotros',
+    link: '#nosotros'
+},{
+    name: 'Servicios',
+    link: '#servicios'
+},{
+    name: 'Portafolio',
+    link: '#portafolio'
+},{
+    name: 'Contacto',
+    link: '#contacto'
+
+}]
+
+---
+<header class="header">
+    <div class="header-container">
+        <div class="header-logo">
+            <a href="">
+                <Image src={Logo} class="header-image" alt="Munay Web" width="150" />
+            </a>
+        </div>
+        <div class="header-menu">
+            <Navigator items={menuItems} />
+            <div class="header-menu-mobile">
+                <Icon name="bars" class="bars-icon" />
+                <Icon name="cancel" class="cancel-icon"/>
+            </div>              
+            <div class="header-menu-social">
+                <Icon name="instagram" class="social-icon i-icon" />
+                <Icon name="facebook" class="social-icon f-icon"/>
+                <Icon name="x" class="social-icon x-icon"/>
+            </div>  
+        </div>
+ 
+
+    </div>
+
+</header>
+<script>
+    import { gsap } from 'https://cdn.skypack.dev/gsap';
+    import { ScrollTrigger } from 'https://cdn.skypack.dev/gsap/ScrollTrigger';
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.to(".header", {
+        scrollTrigger: {
+            trigger: ".header",
+            start: "top top",
+            end: "bottom top",
+            scrub: 1,
+            toggleActions: "play none none none"
+        },
+        zIndex: 100,
+        backgroundColor: "rgba(255, 255, 255, 0.9)",
+        boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)"
+    });
+
+    
+</script>
+
+<style>
+header{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    position: fixed;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 90px;
+    width: 100%;
+    max-width: 1140px;
+    margin: 0 30px;
+}
+.header-logo{
+}
+.header-menu {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+}
+.header-menu-social{
+    margin: 0 10px;
+    display: flex;
+}
+
+.bars-icon {
+    width: 30px;
+    height: 30px;
+    margin: 5px;
+    display: none;
+}
+.cancel-icon {
+    width: 30px;
+    height: 30px;
+    margin: 5px;
+    display: none;
+}
+.social-icon{
+    width: 30px;
+    height: 30px;
+    margin: 5px;
+}
+
+.i-icon:hover{
+    color: #E1306C;
+}
+.f-icon:hover{
+    color: #3B5998;
+}
+.x-icon:hover{
+    color: #E1306C;
+}
+
+@media (max-width: 850px) {
+    .header-image{
+        width: 150px;
+        height: auto;
+    }
+    .header-logo{
+        
+    }
+    .bars-icon {
+        display: block;
+    }
+    .header-menu-social{
+        margin: 0;
+    }
+    .header-menu{
+        justify-content: flex-end;
+    }
+    .header-container {
+        margin: 0 15px;
+    }
+
+
+}
+</style>

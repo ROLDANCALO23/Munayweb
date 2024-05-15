@@ -1,0 +1,65 @@
+---
+interface Props {
+    items: {
+        name: string;
+        link: string;   
+    }[];
+}
+
+const { items } = Astro.props;
+---
+<nav class="header-nav">
+    <ul class="header-links">
+        {items.map(
+            item => <li class="header-link_item">
+                        <a href={item.link}>
+                            {item.name}
+                        </a>
+                    </li>
+        )}
+    
+    </ul>
+</nav>
+
+
+<style>
+.header-nav {
+    display: block;
+    height: 100%;
+}
+.header-links {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    list-style: none;
+    padding: 0;
+}
+.header-links .header-link_item {
+    margin: 0 15px;
+}
+.header-link_item a {
+    color: var(--primary-color);
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 1.5em;
+}
+.header-link_item a:hover {
+    color: var(--ternary-color);
+}
+
+
+@media (max-width: 850px) {
+    .header-links{
+        position: absolute;
+        left: 0;
+        display:initial; 
+        width: 100%;
+        margin-top: 60px;
+    }
+
+    .header-links ul li{
+        width: 100%;
+    }
+}
+</style>

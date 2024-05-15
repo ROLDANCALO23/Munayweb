@@ -1,0 +1,60 @@
+---
+import { Image } from 'astro:assets';
+import WsspImg from '../assets/images/wssp.png';
+---
+<script>
+    import { gsap } from 'https://cdn.skypack.dev/gsap';
+    gsap.to('.wssp-button', {duration: 2, y: 10, repeat: -1, yoyo: true});
+</script>
+<div class="wssp-container">
+    <div class="wssp-button">
+        <a href="https://api.whatsapp.com/send?phone=51982018927&text=Hola%20quiero%20mas%20informacion%20de%20sus%20servicios"
+        target="_blank">
+        <Image src={WsspImg} alt="Munay Web" width="60" height="60"/>
+        </a>
+    </div>
+</div>
+
+<style>
+
+    @keyframes pulse-animation {
+        0% {
+        box-shadow: 0 0 0 0px #12990a;
+        }
+        100% {
+        box-shadow: 0 0 0 20px rgba(0, 0, 0, 0);
+        }
+    }
+
+    .wssp-container {
+        right: 0;
+        bottom: 0;
+        position: fixed;
+        margin: 30px;
+        z-index: 500;
+    }
+    .wssp-button{
+        transform: translatey(0px);
+        animation: float 4s ease-in-out infinite;  
+    }
+    .wssp-button a {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        background-color: #12990a;
+        box-shadow: 0 0 0 0px #13990a;
+        animation: pulse-animation 2s infinite;
+    }
+
+    .wssp-img {
+        width: 60px;
+        height: 60px;
+    }
+    .wssp-img:hover {
+        transform: scale(1.2);
+        transition: .5s;
+    }
+</style>

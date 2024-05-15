@@ -1,0 +1,156 @@
+---
+import { Image } from 'astro:assets';
+import BuildImg from '../assets/images/buildweb.png';
+
+
+let services=[{
+    title: 'Diseño Responsivo',
+    imgurl: '/images/servicio1.png',
+    description: 'Diseño Web adadptativo a todos los dispositos del mercado.'
+},{
+    title: 'Web Personalizada',
+    imgurl: '/images/servicio2.png',
+    description: 'Desarrollo a la medida de tus objetivos y necesidades.'
+},{
+    title: 'SEO',
+    imgurl: '/images/servicio3.png',
+    description: 'Buenos practicas en SEO para posicionar tu sitio web .'
+},{
+    title: 'Asesoría Continua',
+    imgurl: '/images/servicio4.png',
+    description: 'Asesoria en administraciòn servidor,dominio,SSL.'
+
+},
+{
+    title: 'E-Commerce',
+    imgurl: '/images/servicio5.png',
+    description: ' Te ayudamos a crear la tienda virtual para tu negocio con Adobe Commerce.'
+},
+{
+    title: 'Aplicaciones Web',
+    imgurl: '/images/servicio6.png',
+    description: 'Crea tus aplicaciones web con las funcionalidades que necesites.'
+}]
+
+---
+<script type="module">
+    import { gsap } from 'https://cdn.skypack.dev/gsap';
+    import { ScrollTrigger } from 'https://cdn.skypack.dev/gsap/ScrollTrigger';
+    gsap.registerPlugin(ScrollTrigger);
+    gsap.from('.servicios-item', {
+        scrollTrigger: {
+            trigger: '.servicios-item',
+            start: 'top 80%'
+        },
+        duration: 1,
+        opacity: 0,
+        y: 50,
+        stagger: 0.3
+    })
+    //select all servicios-item 
+    const serviciosItem = document.querySelectorAll('.servicios-item');
+    serviciosItem.forEach((item, index) => {
+        //add event listener to each item on hover 
+        item.addEventListener('mouseenter', () => {
+            gsap.to(item, {
+                scale: 1.1,
+                duration: 0.3,
+                color: "#4141be"
+            })
+        })
+        item.addEventListener('mouseleave', () => {
+            gsap.to(item, {
+                scale: 1,
+                duration: 0.3,
+                color: "#000"
+            })
+        })
+    });
+
+</script>
+<section id="services-section">
+    <div class="servicios-container">
+        <h1 class="servicio-title-main">Standares</h1>
+        <ul class="servicios-list">
+        { 
+            services.map(service => 
+              <li class="servicios-item">
+                <img src={service.imgurl} class="servicios-img" alt="">
+                <h2 class="servicios-title">{service.title}</h2>
+                <p class="servicios-description">{service.description}</p>
+              </li>
+            )
+        }
+        </ul>
+      </div>
+</section>
+
+<style>
+    #services-section {
+        width: 100%;
+        max-width: 100%;
+        background-color: var(--primary-color);
+    }
+    .servicios-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 15px;
+    }
+    .servicio-title-main {
+        text-align: center;
+        font-size: 2.5rem;
+        margin-bottom: 50px;
+        color: var(--secondary-color);
+    }
+    .servicios-list {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        list-style: none;
+        padding: 0;
+    }
+    .servicios-item {
+        margin-bottom: 20px;
+        border-radius: 15px;
+        box-shadow: 0 0 5px var(--secondary-color);
+        width:  330px;
+        color: var(--ternary-color);
+        padding: 15px;
+        margin: 15px;
+        border: 2px solid var(--secondary-color);
+
+    }
+    .servicios-item:hover {
+        box-shadow: 0px 0px 30px var(--secondary-color);
+
+    }
+    .servicios-img {
+        width: 100px;
+        display: block;
+        margin: 0 auto;
+    }
+
+
+    .servicios-title {
+        text-align: center;
+        font-size: 1.5rem;
+        margin: 20px 0;
+    }
+
+    .servicios-description {
+        text-align: center;
+        font-size: 1rem;
+    }
+
+    @media (max-width: 830px) {
+        .servicios-item {
+        width: 240px;
+        }
+    }
+    @media (max-width: 650px) {
+        .servicios-item {
+        width: 100%;
+        margin: 15px 30px;
+        }
+    }
+</style>

@@ -1,0 +1,176 @@
+---
+let portfolio=[
+    {
+        "id":"1",
+        "summary":"Landing Page ",
+        "content":"A simple portfolio website",
+        "img":"/images/servicio1.png"
+    },
+    {
+        "id":"2",
+        "summary":"Sitio Web",
+        "content":"A simple portfolio website",
+        "img":"/images/servicio2.png"
+    },
+    {
+        "id":"3",
+        "summary":"Tienda Virtual",
+        "content":"A simple portfolio website",
+        "img":"/images/servicio3.png"
+    },
+    {
+        "id":"4",
+        "summary":"Pagina de presentación",
+        "content":"A simple portfolio website",
+        "img":"/images/servicio4.png"
+    },
+
+]
+---
+<script type="module">
+import { gsap } from 'https://cdn.skypack.dev/gsap';
+    
+    const portfolioDetailImg = document.querySelectorAll('.portfolio-image-container');
+    const portfolioDetailItem = document.querySelectorAll('.portfolio-detail-item');
+
+    let posX=0;
+    let posY=0;
+    let paso=20;
+    let portfolioDetailImgArray = Array.from(portfolioDetailImg);
+    portfolioDetailImgArray.forEach((img) => {
+        img.style.transform = `translate(${posX}px, ${posY}px)`;
+        img.style.zIndex = (portfolioDetailImgArray.length)*paso-posX;
+        posX+=paso;
+        posY+=paso;
+    }); 
+
+
+
+
+    portfolioDetailItem.forEach((item) => {
+        item.addEventListener('click', () => {
+            console.log('click')
+            let value = item.getAttribute('data-value');
+            let fisrtValue=portfolioDetailImgArray[0].getAttribute('data-value');
+            let x = value - fisrtValue; 
+            if(value>fisrtValue){
+                x = value - fisrtValue;
+            }
+            else if(x!=0){
+                x = x+4;
+            }
+            console.log(x);
+            for (let i = 0; i < x; i++) {
+                
+                posX=0;
+                posY=0;
+                paso=20;
+               
+
+                portfolioDetailImgArray.forEach((img) => {
+                    console.log(img.getAttribute('data-value'));
+                    
+                    if(posX==0){
+                        gsap.to(img, { duration: 1.5, x:posX+ 60,y:posY+60,zIndex:0 ,});
+                    }
+                    else {
+                        //img.style.display = 'none';
+                        gsap.to(img, { duration: 1.5, x:posX -20,y:posY-20,zIndex:80-posX});
+                    }
+                    posX+=paso;
+                    posY+=paso;
+                });
+                const firstImg = portfolioDetailImgArray[0];
+                portfolioDetailImgArray.shift();
+                portfolioDetailImgArray.push(firstImg);
+            }
+
+
+
+        });
+    });
+
+</script>
+<section id="portfolio-section">
+    <div class="portfolio-container">
+        <div class="portfolio-detail">
+            {
+                portfolio.map((item) => (
+                    <details name="portfolio-detail-item" class="portfolio-detail-item" data-value={item.id}>
+                        <summary>{item.summary}</summary>
+                        <p>{item.content}</p>
+                    </details>
+                ))
+            }
+        </div>
+        <div class="portfolio-gallery">
+            
+            {
+                portfolio.map((item) => (
+                    <div class="portfolio-image-container" data-value={item.id}>
+                        <img src={item.img} class="portfolio-image" />
+                    </div>
+                    
+                ))
+            }
+    
+        </div>
+    
+    </div>
+</section>
+
+<style>
+    #portfolio-section{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: ;
+        width: 100%;
+        max-width: 100%;
+        background-color: var(--primary-color);
+        padding-bottom: 120px;
+
+    }
+    .portfolio-container{
+        display: flex;
+        justify-content: center;
+        border-radius: 10px;
+    }
+    .portfolio-gallery{
+        width: 420px;
+    }	
+    
+    .portfolio-detail-item{
+        padding: 15px;
+        margin: 15px;
+        border: 2px solid var(--secondary-color);
+        border-radius: 5px;
+        cursor: pointer;
+        background-color: #ffffff;
+        color: var(--secondary-color);
+        font-weight: 500;
+        font-size: 1.5rem;
+        box-shadow: 0 0 3px var(--secondary-color);
+    }
+    
+    .portfolio-image-container{
+        padding: 15px;
+        margin: 15px;
+        border: 2px solid var(--secondary-color);
+        border-radius: 5px;
+        cursor: pointer;
+        background-color: #ffffff;
+        color: var(--secondary-color);
+        font-weight: 500;
+        font-size: 1.5rem;
+        box-shadow: 0 0 3px var(--secondary-color);
+        position: absolute;
+        width: 360px;
+    }
+
+    .portfolio-image-container img{
+        width: 330px;
+        object-fit: cover;
+    }
+
+</style>
