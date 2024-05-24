@@ -31,12 +31,12 @@ const { items } = Astro.props;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 100%;
     list-style: none;
     padding: 0;
+
 }
 .header-links .header-link_item {
-    margin: 0 15px;
+    margin: 15px 15px;
 }
 .header-link_item a {
     color: var(--primary-color);
@@ -53,13 +53,15 @@ const { items } = Astro.props;
     .header-links{
         position: absolute;
         left: 0;
-        display:initial; 
+        display:none; 
         width: 100%;
-        margin-top: 60px;
+        margin-top: 45px;
+        flex-direction: column;
     }
 
     .header-links ul li{
         width: 100%;
+        margin: 15px 15px;
     }
 }
 </style>
