@@ -34,14 +34,12 @@ let menuItems=[{
                 <Icon name="bars" class="bars-icon" />
                 <Icon name="cancel" class="cancel-icon"/>
             </div>              
-            <div class="header-menu-social">
-                <Icon name="instagram" class="social-icon i-icon" />
-                <Icon name="facebook" class="social-icon f-icon"/>
-                <Icon name="x" class="social-icon x-icon"/>
-            </div>  
         </div>
- 
-
+        <div class="header-social">
+            <Icon name="instagram" class="social-icon i-icon" />
+            <Icon name="facebook" class="social-icon f-icon"/>
+            <Icon name="x" class="social-icon x-icon"/>
+        </div>  
     </div>
 
 </header>
@@ -55,15 +53,50 @@ let menuItems=[{
             trigger: ".header",
             start: "top top",
             end: "bottom top",
-            scrub: 1,
-            toggleActions: "play none none none"
+            scrub: 0,
+            toggleActions: "play none none none",
         },
-        zIndex: 100,
+        borderBottom: "3px solid #fff",
         backgroundColor: "#4141be",
         boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)"
     });
 
+    const menu = document.querySelector('.header-links');
+    const barsIcon = document.querySelector('.bars-icon');
+    const cancelIcon = document.querySelector('.cancel-icon');
     
+    let isMenuOpen = false;
+
+    function toggleMenu() {
+
+        if (isMenuOpen) {
+            gsap.to(menu, { height: 0, opacity: 0, display: 'none' });
+            gsap.to(barsIcon, { display: 'block', delay: 0.5 });
+            gsap.to(cancelIcon, { display: 'none' });
+        } else {
+            gsap.to(menu, { height: 'auto', opacity: 1, display: 'flex',backgroundColor: "#4141be"});
+            gsap.to(barsIcon, { display: 'none' });
+            gsap.to(cancelIcon, { display: 'block', delay: 0.5});
+        }
+
+        isMenuOpen = !isMenuOpen;
+    }
+
+    const nuevo= document.querySelector('.header-menu-mobile').addEventListener('click', toggleMenu);
+
+    //cambiar el toogleMenu cuando el view es mayor a 850px mostrar el menu y ocualtar el barsicon y el cancel icon
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 850) {
+            gsap.to(menu, { height: 'auto', opacity: 1, display: 'flex' });
+            gsap.to(barsIcon, { display: 'none' });
+            gsap.to(cancelIcon, { display: 'none' });
+        }
+        else{
+            gsap.to(menu, { height: 0, opacity: 0, display: 'none' });
+            gsap.to(barsIcon, { display: 'block' });
+            gsap.to(cancelIcon, { display: 'none' });
+        }
+    });
 </script>
 
 <style>
@@ -72,6 +105,7 @@ header{
     justify-content: center;
     width: 100%;
     position: fixed;
+    z-index: 500;
 }
 
 .header-container {
@@ -87,13 +121,11 @@ header{
 }
 .header-menu {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
-    width: 100%;
 }
-.header-menu-social{
-    margin: 0 10px;
-    display: flex;
+.header-social{
+    min-width: 130px;
 }
 
 .bars-icon {
@@ -124,9 +156,13 @@ header{
     color: #E1306C;
 }
 
+.header-image{
+        width: 130px;
+        height: auto;
+    }
 @media (max-width: 850px) {
     .header-image{
-        width: 150px;
+        width: 130px;
         height: auto;
     }
     .header-logo{
