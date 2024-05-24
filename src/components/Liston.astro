@@ -14,9 +14,29 @@
     text-align: center;
     margin: 1.9375rem;
     padding: 1.8125rem 0;
+    display: flex;
+    flex-direction: column; 
   }
   .liston p {
     font-family: system-ui, sans-serif;
+    margin: 0; 
+    padding: 0 1rem; 
+  }
+
+  @media (min-width: 576px) {
+    .liston {
+      padding: 2rem; 
+    }
+    .liston p {
+      padding: 0 2rem; 
+    }
+  }
+
+  @media (min-width: 768px) {
+    .liston {
+      flex-direction: row; 
+      justify-content: center;
+    }
   }
 </style>
  
