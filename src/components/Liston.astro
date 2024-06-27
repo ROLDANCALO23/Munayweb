@@ -1,0 +1,47 @@
+---
+// src/components/liston.astro
+---
+<div class="liston">
+  <p>¡Potencia tu Ecommerce con <strong>Magento 2</strong> en Perú y Latinoamérica! 
+     Aprovecha la flexibilidad y escalabilidad de Magento 2 para ofrecer una experiencia de compra superior. 
+  </p>
+</div>
+
+<style>
+  .liston {
+    background-color: #4909df61;
+    text-align: center;
+    
+    
+    display: flex;
+    flex-direction: column; 
+  }
+  .liston p {
+    font-family: system-ui, sans-serif;
+    margin: 0; 
+    
+  }
+
+  @media (min-width: 576px) {
+    .liston {
+      padding: 2rem; 
+    }
+    .liston p {
+      padding: 0 2rem; 
+    }
+  }
+
+  @media (min-width: 768px) {
+    .liston {
+      flex-direction: row; 
+      justify-content: center;
+      
+    }
+  }
+  @media (max-width: 768px){
+    .liston {
+          z-index: 40;
+    }
+    }
+</style>
+ 

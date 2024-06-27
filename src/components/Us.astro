@@ -1,5 +1,5 @@
 ---
-import { Image } from "astro:assets"
+import { Image } from "astro:assets";
 import UsImg from '../assets/images/us.jpg';
 
 ---
@@ -10,12 +10,9 @@ import UsImg from '../assets/images/us.jpg';
             <div class="us-content">
               <Image src={UsImg} alt="Munay Web developers" class="us-img" width=520 />
               <p class="us-text">
-                <strong>Munay Web developers</strong> es un grupo de profesionales especialistas en el <strong>desarrollo
-                  web</strong>
-                ofreciendo un servicio de calidad y a la medida de tus necesidades. Nuestro objetivo es ayudarte a alcanzar
-                tus metas y objetivos
-                comerciales creando el <strong> sitio web</strong> que tu empresa necesita
-    
+                En <strong>Munay Web </strong>, somos un equipo de profesionales 
+                dedicados al <strong>desarrollo web</strong>, comprometidos a brindarte servicios 
+                de calidad personalizados según tus necesidades.
               </p>
             </div>
           </div>
@@ -25,7 +22,8 @@ import UsImg from '../assets/images/us.jpg';
     import { gsap } from 'https://cdn.skypack.dev/gsap';
     import { ScrollTrigger } from 'https://cdn.skypack.dev/gsap/ScrollTrigger';
     gsap.registerPlugin(ScrollTrigger);
-    gsap.from('.us-text', {
+    function animateForDesktop () {
+        gsap.from('.us-text', {
         scrollTrigger: {
             trigger: '.us-text',
             start: 'top 80%',
@@ -47,6 +45,44 @@ import UsImg from '../assets/images/us.jpg';
         opacity: 0,
         duration: 1.5,
     });
+     }
+
+
+    function animateForMobile() {
+        gsap.from('.us-text', {
+            y: 120,
+            opacity: 0,
+            duration: 1.5,
+            scrollTrigger: {
+            trigger: '.us-img',
+            start: 'top 80%',
+            end: 'bottom 60%',
+            toggleActions: 'play none none none',
+        }
+            
+            
+        });
+        gsap.from('.us-img', {
+            y: -120,
+            opacity: 0,
+            zIndex: 10,
+            duration: 1.5,
+            scrollTrigger: {
+            trigger: '.us-img',
+            start: 'top 80%',
+            end: 'bottom 60%',
+            toggleActions: 'play none none none',
+
+        }
+            
+            
+        });
+    }
+    if (window.matchMedia("(max-width: 767px)").matches) {
+        animateForMobile();
+    } else {
+        animateForDesktop();
+    }
 </script>
 
 <style>
@@ -70,17 +106,19 @@ import UsImg from '../assets/images/us.jpg';
         width:35% ;
         margin-right: 120px;
     }
-    @media screen and (max-width: 975px) {
+    @media (max-width: 975px) {
         .us-text{
             width: 100%;
             margin-right: 0px;
+
         }
         
     }
-    @media screen and (max-width: 600px) {
+    @media  (max-width: 767px) {
         .us-img{
             width: 100%;
             height: 100%;
+            z-index: 10;
         }
         
     }
