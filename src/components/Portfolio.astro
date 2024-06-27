@@ -28,7 +28,9 @@ let portfolio=[
 ]
 ---
 <script type="module">
-import { gsap } from 'https://cdn.skypack.dev/gsap';
+    import { gsap } from 'https://cdn.skypack.dev/gsap';
+
+if (window.innerWidth >= 850) {
     
     const portfolioDetailImg = document.querySelectorAll('.portfolio-image-container');
     const portfolioDetailItem = document.querySelectorAll('.portfolio-detail-item');
@@ -43,9 +45,6 @@ import { gsap } from 'https://cdn.skypack.dev/gsap';
         posX+=paso;
         posY+=paso;
     }); 
-
-
-
 
     portfolioDetailItem.forEach((item) => {
         item.addEventListener('click', () => {
@@ -89,6 +88,35 @@ import { gsap } from 'https://cdn.skypack.dev/gsap';
 
         });
     });
+
+
+    }
+else {
+    const images = document.querySelectorAll('.portfolio-image');
+    const detailsElements = document.querySelectorAll('.portfolio-detail-item');
+
+    const detailsMap = {};
+    detailsElements.forEach(detail => {
+        const dataValue = detail.getAttribute('data-value');
+        detailsMap[dataValue] = detail;
+    });
+
+    images.forEach(image => {
+        const imageContainer = image.closest('.portfolio-image-container');
+        const imageValue = imageContainer.getAttribute('data-value');
+        const correspondingDetail = detailsMap[imageValue];
+        if (correspondingDetail) {
+            const imageClone = image.cloneNode(true);
+            correspondingDetail.appendChild(imageClone);
+            imageContainer.remove(); // Elimina el contenedor de la imagen original, incluida la imagen
+        }
+    });
+}
+
+
+
+
+
 
 </script>
 <section id="portfolio-section">
@@ -176,9 +204,17 @@ import { gsap } from 'https://cdn.skypack.dev/gsap';
     @media (max-width: 850px) {
         .portfolio-container{
             flex-direction: column;
+            width: 100%;
         }
 
-
+        .portfolio-detail-item{
+            width: 75%;
+ 
+        }
+        .portfolio-image{
+            width: 50%;
+            margin: auto;
+        }
     }
 
 </style>
