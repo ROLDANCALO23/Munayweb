@@ -24,7 +24,6 @@ import UsImg from "../assets/images/us.jpg";
     </div>
 </section>
 <script>
-    
     function animateForDesktop() {
         const usText = document.querySelector(".us-text") as HTMLElement;
         const usImg = document.querySelector(".us-img") as HTMLElement;
@@ -137,70 +136,59 @@ import UsImg from "../assets/images/us.jpg";
     }
 
     @media (max-width: 767px) {
-        .us-container {
-            position: relative;
-            
-            height: auto:/* Asegura que ocupe toda la altura del viewport */
-            overflow: hidden;
-        }
+        @media (max-width: 767px) {
+            .us-img {
+                width: 100%;
+                height: auto;
+            }
+            .us-container {
+                position: relative;
+                width: 100%;
+                height: auto;
+                overflow: hidden;
+            }
 
-        .us-text,
-        .us-img {
-            position: relative;
-            z-index: 10 ;
-            
-        }
+            .us-text,
+            .us-img {
+                position: relative;
+                z-index: 10;
+            }
 
-        .us-text {
-            bottom: 0;
-            transform: translateY(100%);
-        }
+            .us-text {
+                bottom: 0;
+                transform: translateY(20%);
+            }
 
-        .us-img {
-            top: 0;
-            transform: translateY(-100%);
-        }
+            .us-img {
+                top: 0;
+                transform: translateY(-20%);
+            }
 
-        @keyframes bounceAnimationTextMobile {
-            0% {
-                transform: translateY(100%);
-                
+            @keyframes slideAnimationTextMobile {
+                0% {
+                    transform: translateY(50%);
+                }
+                100% {
+                    transform: translateY(0);
+                }
             }
-            50% {
-                transform: translateY(-20%) scale(1.2);
-                opacity: 1;
-            }
-            70% {
-                transform: translateY(10%) scale(1);
-            }
-            100% {
-                transform: translateY(0) scale(1);
-            }
-        }
 
-        @keyframes bounceAnimationImgMobile {
-            0% {
-                transform: translateY(-100%);
-                
+            @keyframes slideAnimationImgMobile {
+                0% {
+                    transform: translateY(-50%);
+                }
+                100% {
+                    transform: translateY(0);
+                }
             }
-            50% {
-                transform: translateY(20%) scale(1.2);
-                opacity: 1;
-            }
-            70% {
-                transform: translateY(-10%) scale(1);
-            }
-            100% {
-                transform: translateY(0) scale(1);
-            }
-        }
 
-        .us-text.visible {
-            animation: bounceAnimationTextMobile 1.5s ease forwards;
-        }
+            .us-text.visible {
+                animation: slideAnimationTextMobile 1.5s ease forwards;
+            }
 
-        .us-img.visible {
-            animation: bounceAnimationImgMobile 1.5s ease forwards;
+            .us-img.visible {
+                animation: slideAnimationImgMobile 1.5s ease forwards;
+            }
         }
     }
 </style>
