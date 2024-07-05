@@ -1,88 +1,113 @@
 ---
-import { Image } from 'astro:assets';
-import BuildImg from '../assets/images/buildweb.png';
+import { Image } from "astro:assets";
+import BuildImg from "../assets/images/buildweb.png";
 
-
-let services=[{
-    title: 'Diseño Responsivo',
-    imgurl: '/images/servicio1.png',
-    description: 'Diseño Web adadptativo en todos los dispositos.'
-},{
-    title: 'Web Personalizada',
-    imgurl: '/images/servicio2.png',
-    description: 'Desarrollo a tu medida  y a tus  necesidades.'
-},{
-    title: 'SEO',
-    imgurl: '/images/servicio3.png',
-    description: 'Buenos practicas en SEO para posicionar tu sitio web .'
-},{
-    title: 'Asesoría Continua',
-    imgurl: '/images/servicio4.png',
-    description: 'Asesoria en administraciòn: servidor,dominio,SSL.'
-
-},
-{
-    title: 'E-Commerce',
-    imgurl: '/images/servicio5.png',
-    description: ' Te ayudamos a montar  tienda(s) virtual(es) para tu negocio con Adobe Commerce.'
-},
-{
-    title: 'Aplicaciones Web',
-    imgurl: '/images/servicio6.png',
-    description: 'Crea tus aplicaciones web con  funcionalidades que necesites.'
-}]
-
+let services = [
+    {
+        title: "Diseño Responsivo",
+        imgurl: "/images/servicio1.png",
+        description: "Diseño Web adadptativo en todos los dispositos.",
+    },
+    {
+        title: "Web Personalizada",
+        imgurl: "/images/servicio2.png",
+        description: "Desarrollo a tu medida  y a tus  necesidades.",
+    },
+    {
+        title: "SEO",
+        imgurl: "/images/servicio3.png",
+        description: "Buenos practicas en SEO para posicionar tu sitio web .",
+    },
+    {
+        title: "Asesoría Continua",
+        imgurl: "/images/servicio4.png",
+        description: "Asesoria en administraciòn: servidor,dominio,SSL.",
+    },
+    {
+        title: "E-Commerce",
+        imgurl: "/images/servicio5.png",
+        description:
+            " Te ayudamos a montar  tienda(s) virtual(es) para tu negocio con Adobe Commerce.",
+    },
+    {
+        title: "Aplicaciones Web",
+        imgurl: "/images/servicio6.png",
+        description:
+            "Crea tus aplicaciones web con  funcionalidades que necesites.",
+    },
+];
 ---
-<script type="module">
-    import { gsap } from 'https://cdn.skypack.dev/gsap';
-    import { ScrollTrigger } from 'https://cdn.skypack.dev/gsap/ScrollTrigger';
-    gsap.registerPlugin(ScrollTrigger);
-    gsap.from('.servicios-item', {
-        scrollTrigger: {
-            trigger: '.servicios-item',
-            start: 'top 80%'
-        },
-        duration: 1,
-        opacity: 0,
-        y: 50,
-        stagger: 0.3
-    })
-    //select all servicios-item 
-    const serviciosItem = document.querySelectorAll('.servicios-item');
-    serviciosItem.forEach((item, index) => {
-        //add event listener to each item on hover 
-        item.addEventListener('mouseenter', () => {
-            gsap.to(item, {
-                scale: 1.1,
-                duration: 0.3,
-                color: "#4141be"
-            })
-        })
-        item.addEventListener('mouseleave', () => {
-            gsap.to(item, {
-                scale: 1,
-                duration: 0.3,
-                color: "#000"
-            })
-        })
-    });
 
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const serviciosItems = document.querySelectorAll(
+            ".servicios-item",
+        ) as NodeListOf<HTMLElement>;
+
+        if (!serviciosItems.length) return;
+
+        const observerOptions: IntersectionObserverInit = {
+            root: null,
+            rootMargin: "0px",
+            threshold: 0.2,
+        };
+
+        const observer = new IntersectionObserver(
+            (
+                entries: IntersectionObserverEntry[],
+                observer: IntersectionObserver,
+            ): void => {
+                entries.forEach((entry: IntersectionObserverEntry): void => {
+                    if (entry.isIntersecting) {
+                        const target = entry.target as HTMLElement;
+                        target.classList.add("animate");
+                        observer.unobserve(target);
+                    }
+                });
+            },
+            observerOptions,
+        );
+
+        serviciosItems.forEach((item: HTMLElement, index: number): void => {
+            const delay = index * 150; // 150ms delay between each item
+            item.style.animationDelay = `${delay}ms`;
+            observer.observe(item);
+
+            item.addEventListener("mouseenter", (): void => {
+                item.style.transition = "transform 0.5s, color 0.5s"; // Aumentado a 0.5 segundos
+                item.style.transform = "scale(1.1)";
+                item.style.color = "#4141be";
+            });
+
+            item.addEventListener("mouseleave", (): void => {
+                item.style.transition = "transform 0.5s, color 0.5s"; // Aumentado a 0.5 segundos
+                item.style.transform = "scale(1)";
+                item.style.color = "#000";
+            });
+        });
+    });
 </script>
 <section id="services-section">
     <div class="servicios-container">
         <h1 class="servicio-title-main">Standares</h1>
         <ul class="servicios-list">
-        { 
-            services.map(service => 
-              <li class="servicios-item">
-                <img src={service.imgurl} class="servicios-img" alt="">
-                <h2 class="servicios-title">{service.title}</h2>
-                <p class="servicios-description">{service.description}</p>
-              </li>
-            )
-        }
+            {
+                services.map((service) => (
+                    <li class="servicios-item">
+                        <img
+                            src={service.imgurl}
+                            class="servicios-img"
+                            alt=""
+                        />
+                        <h2 class="servicios-title">{service.title}</h2>
+                        <p class="servicios-description">
+                            {service.description}
+                        </p>
+                    </li>
+                ))
+            }
         </ul>
-      </div>
+    </div>
 </section>
 
 <style>
@@ -91,17 +116,20 @@ let services=[{
         max-width: 100%;
         background-color: var(--primary-color);
     }
+
     .servicios-container {
         max-width: 1200px;
         margin: 0 auto;
         padding: 0 15px;
     }
+
     .servicio-title-main {
         text-align: center;
         font-size: 2.5rem;
         margin-bottom: 50px;
         color: var(--secondary-color);
     }
+
     .servicios-list {
         display: flex;
         flex-wrap: wrap;
@@ -109,27 +137,30 @@ let services=[{
         list-style: none;
         padding: 0;
     }
+
     .servicios-item {
         margin-bottom: 20px;
         border-radius: 15px;
         box-shadow: 0 0 5px var(--secondary-color);
-        width:  330px;
+        width: 330px;
         color: var(--ternary-color);
         padding: 15px;
         margin: 15px;
         border: 2px solid var(--secondary-color);
-
+        opacity: 0;
+        transform: translateY(50px);
+        animation: fadeInUp 1s forwards;
     }
+
     .servicios-item:hover {
         box-shadow: 0px 0px 30px var(--secondary-color);
-
     }
+
     .servicios-img {
         width: 100px;
         display: block;
         margin: 0 auto;
     }
-
 
     .servicios-title {
         text-align: center;
@@ -144,13 +175,41 @@ let services=[{
 
     @media (max-width: 830px) {
         .servicios-item {
-        width: 240px;
+            width: 240px;
         }
     }
+
     @media (max-width: 650px) {
         .servicios-item {
-        width: 100%;
-        margin: 15px 30px;
+            width: 100%;
+            margin: 15px 30px;
+        }
+    }
+
+    .servicios-item {
+        opacity: 0;
+        transform: translateY(-50px) scale(0); /* Comienza desde arriba */
+        animation: fadeInOut 1.5s forwards; /* Aumentado a 1.5 segundos */
+        margin-bottom: 20px; /* Añade un margen inferior para separar visualmente los elementos */
+        padding: 15px; /* Añade un margen interior para separación dentro del elemento */
+    }
+
+    .servicios-item:hover {
+        transform: scale(1.1);
+        color: #4141be;
+        transition:
+            transform 0.5s,
+            color 0.5s; /* Aumentado a 0.5 segundos */
+    }
+
+    @keyframes fadeInOut {
+        0% {
+            opacity: 0;
+            transform: translateY(-50px) scale(0); /* Comienza desde arriba */
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0) scale(1); /* Al final, llega a su posición final y tamaño */
         }
     }
 </style>
