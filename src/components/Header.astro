@@ -44,59 +44,119 @@ let menuItems=[{
 
 </header>
 <script>
-    import { gsap } from 'https://cdn.skypack.dev/gsap';
-    import { ScrollTrigger } from 'https://cdn.skypack.dev/gsap/ScrollTrigger';
-    gsap.registerPlugin(ScrollTrigger);
+// Función para aplicar estilos cuando se cumplan las condiciones de scroll
+function applyStylesOnScroll(): void {
+        const header = document.querySelector('.header') as HTMLElement;
+        if (!header) return;
 
-    gsap.to(".header", {
-        scrollTrigger: {
-            trigger: ".header",
-            start: "top top",
-            end: "bottom top",
-            scrub: 0,
-            toggleActions: "play none none none",
-        },
-        borderBottom: "3px solid #fff",
-        backgroundColor: "#4141be",
-        boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)"
-    });
+        // Obtén la posición del scroll y la altura del elemento
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const headerHeight = header.offsetHeight;
 
-    const menu = document.querySelector('.header-links');
-    const barsIcon = document.querySelector('.bars-icon');
-    const cancelIcon = document.querySelector('.cancel-icon');
-    
-    let isMenuOpen = false;
+        // Calcula el punto de inicio y fin basado en la altura del elemento
+        const start: number = 0; // top top
+        const end: number = headerHeight; // bottom top
 
-    function toggleMenu() {
-
-        if (isMenuOpen) {
-            gsap.to(menu, { height: 0, opacity: 0, display: 'none' });
-            gsap.to(barsIcon, { display: 'block', delay: 0.5 });
-            gsap.to(cancelIcon, { display: 'none' });
+        // Aplica estilos si la posición del scroll está entre el inicio y el fin
+        if (scrollTop >= start && scrollTop <= end) {
+            header.style.borderBottom = ""; // Estilo original
+            header.style.backgroundColor = ""; // Estilo original
+            header.style.boxShadow = ""; // Estilo original
         } else {
-            gsap.to(menu, { height: 'auto', opacity: 1, display: 'flex',backgroundColor: "#4141be"});
-            gsap.to(barsIcon, { display: 'none' });
-            gsap.to(cancelIcon, { display: 'block', delay: 0.5});
+            // Revierte a los estilos originales si es necesario
+            header.style.borderBottom = "3px solid #fff";
+            header.style.backgroundColor = "#4141be";
+            header.style.boxShadow = "0 0 10px rgba(0, 0, 0, 0.1)";
         }
-
-        isMenuOpen = !isMenuOpen;
     }
 
-    const nuevo= document.querySelector('.header-menu-mobile').addEventListener('click', toggleMenu);
+    // Escucha el evento de scroll en la ventana
+    window.addEventListener('scroll', applyStylesOnScroll);
+
+    // Aplica los estilos iniciales al cargar la página
+    applyStylesOnScroll();
+
+// Asumiendo que estos estilos ya están definidos en algún lugar de tu CSS
+const menu: HTMLElement | null = document.querySelector('.header-links');
+const barsIcon: HTMLElement | null = document.querySelector('.bars-icon');
+const cancelIcon: HTMLElement | null = document.querySelector('.cancel-icon');
+const headerMenuMobile: HTMLElement | null = document.querySelector('.header-menu-mobile');
+
+let isMenuOpen: boolean = false;
+
+function toggleMenu(): void {
+    if (!menu || !barsIcon || !cancelIcon) {
+        console.error('One or more elements were not found!');
+        return;
+    }
+
+    if (isMenuOpen) {
+        // Aplicar estilos para "cerrar" el menú
+        menu.classList.add('menu-hidden');
+        menu.classList.remove('menu-visible');
+
+        barsIcon.classList.remove('hidden');
+        cancelIcon.classList.add('hidden');
+
+        // Espera 0.5 segundos para cambiar la visibilidad de los iconos, si es necesario
+        setTimeout(() => {
+            barsIcon.classList.add('visible');
+            cancelIcon.classList.remove('visible');
+        }, 500);
+    } else {
+        // Aplicar estilos para "abrir" el menú
+        menu.classList.remove('menu-hidden');
+        menu.classList.add('menu-visible');
+
+        barsIcon.classList.add('hidden');
+        cancelIcon.classList.remove('hidden');
+
+        setTimeout(() => {
+            barsIcon.classList.remove('visible');
+            cancelIcon.classList.add('visible');
+        }, 500);
+    }
+
+    isMenuOpen = !isMenuOpen;
+}
+
+if (headerMenuMobile !== null) {
+    headerMenuMobile.addEventListener('click', toggleMenu);
+}
 
     //cambiar el toogleMenu cuando el view es mayor a 850px mostrar el menu y ocualtar el barsicon y el cancel icon
     window.addEventListener('resize', () => {
-        if (window.innerWidth > 850) {
-            gsap.to(menu, { height: 'auto', opacity: 1, display: 'flex' });
-            gsap.to(barsIcon, { display: 'none' });
-            gsap.to(cancelIcon, { display: 'none' });
-        }
-        else{
-            gsap.to(menu, { height: 0, opacity: 0, display: 'none' });
-            gsap.to(barsIcon, { display: 'block' });
-            gsap.to(cancelIcon, { display: 'none' });
-        }
-    });
+    // Asegúrate de que los elementos existen en el DOM antes de intentar acceder a ellos.
+    const menu: HTMLElement | null = document.querySelector('.menu');
+    const barsIcon: HTMLElement | null = document.querySelector('.bars-icon');
+    const cancelIcon: HTMLElement | null = document.querySelector('.cancel-icon');
+
+    // Verifica que los elementos necesarios existan.
+    if (!menu || !barsIcon || !cancelIcon) {
+        console.error("One or more elements are missing!");
+        return;
+    }
+
+    if (window.innerWidth > 850) {
+        // Aplica estilos directamente para mostrar el menú
+        menu.style.height = 'auto';
+        menu.style.opacity = '1';
+        menu.style.display = 'flex';
+
+        // Oculta los iconos
+        barsIcon.style.display = 'none';
+        cancelIcon.style.display = 'none';
+    } else {
+        // Aplica estilos directamente para ocultar el menú
+        menu.style.height = '0';
+        menu.style.opacity = '0';
+        menu.style.display = 'none';
+
+        // Muestra el icono de barras y oculta el icono de cancelar
+        barsIcon.style.display = 'block';
+        cancelIcon.style.display = 'none';
+    }
+});
 </script>
 
 <style>

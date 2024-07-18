@@ -27,98 +27,7 @@ let portfolio=[
 
 ]
 ---
-<script type="module">
-    import { gsap } from 'https://cdn.skypack.dev/gsap';
 
-if (window.innerWidth >= 850) {
-    
-    const portfolioDetailImg = document.querySelectorAll('.portfolio-image-container');
-    const portfolioDetailItem = document.querySelectorAll('.portfolio-detail-item');
-
-    let posX=0;
-    let posY=0;
-    let paso=20;
-    let portfolioDetailImgArray = Array.from(portfolioDetailImg);
-    portfolioDetailImgArray.forEach((img) => {
-        img.style.transform = `translate(${posX}px, ${posY}px)`;
-        img.style.zIndex = (portfolioDetailImgArray.length)*paso-posX;
-        posX+=paso;
-        posY+=paso;
-    }); 
-
-    portfolioDetailItem.forEach((item) => {
-        item.addEventListener('click', () => {
-            console.log('click')
-            let value = item.getAttribute('data-value');
-            let fisrtValue=portfolioDetailImgArray[0].getAttribute('data-value');
-            let x = value - fisrtValue; 
-            if(value>fisrtValue){
-                x = value - fisrtValue;
-            }
-            else if(x!=0){
-                x = x+4;
-            }
-            console.log(x);
-            for (let i = 0; i < x; i++) {
-                
-                posX=0;
-                posY=0;
-                paso=20;
-               
-
-                portfolioDetailImgArray.forEach((img) => {
-                    console.log(img.getAttribute('data-value'));
-                    
-                    if(posX==0){
-                        gsap.to(img, { duration: 1.5, x:posX+ 60,y:posY+60,zIndex:0 ,});
-                    }
-                    else {
-                        //img.style.display = 'none';
-                        gsap.to(img, { duration: 1.5, x:posX -20,y:posY-20,zIndex:80-posX});
-                    }
-                    posX+=paso;
-                    posY+=paso;
-                });
-                const firstImg = portfolioDetailImgArray[0];
-                portfolioDetailImgArray.shift();
-                portfolioDetailImgArray.push(firstImg);
-            }
-
-
-
-        });
-    });
-
-
-    }
-else {
-    const images = document.querySelectorAll('.portfolio-image');
-    const detailsElements = document.querySelectorAll('.portfolio-detail-item');
-
-    const detailsMap = {};
-    detailsElements.forEach(detail => {
-        const dataValue = detail.getAttribute('data-value');
-        detailsMap[dataValue] = detail;
-    });
-
-    images.forEach(image => {
-        const imageContainer = image.closest('.portfolio-image-container');
-        const imageValue = imageContainer.getAttribute('data-value');
-        const correspondingDetail = detailsMap[imageValue];
-        if (correspondingDetail) {
-            const imageClone = image.cloneNode(true);
-            correspondingDetail.appendChild(imageClone);
-            imageContainer.remove(); // Elimina el contenedor de la imagen original, incluida la imagen
-        }
-    });
-}
-
-
-
-
-
-
-</script>
 <section id="portfolio-section">
     <div class="portfolio-container">
         <div class="portfolio-detail">
@@ -146,6 +55,103 @@ else {
     
     </div>
 </section>
+
+<script>
+    import { string } from "astro/zod";
+import { gsap } from "gsap";
+
+    if (window.innerWidth >= 850) {
+        
+        const portfolioDetailImg = document.querySelectorAll('.portfolio-image-container');
+        const portfolioDetailItem = document.querySelectorAll('.portfolio-detail-item');
+
+        let posX=0;
+        let posY=0;
+        let paso=20;
+        let portfolioDetailImgArray = Array.from(portfolioDetailImg)  as HTMLElement[];
+        portfolioDetailImgArray.forEach((img) => {
+            if(img){
+                img.style.transform = `translate(${posX}px, ${posY}px)`;
+                img.style.zIndex = `${(portfolioDetailImgArray.length) * paso - posX}`;               
+            }
+            posX+=paso;
+            posY+=paso;
+        }); 
+
+        portfolioDetailItem.forEach((item) => {
+            item.addEventListener('click', () => {
+                let x=0;
+                let value = parseInt(item.getAttribute('data-value')  ??"0",10);
+                let firstValue = parseInt(portfolioDetailImgArray[0].getAttribute('data-value') ?? "0", 10);
+                //let x = value - fisrtValue; 
+                if(value>firstValue){
+                    x = value - firstValue;
+                }
+                else if(x!=0){
+                    x = x+4;
+                }
+                for (let i = 0; i < x; i++) {
+                    
+                    posX=0;
+                    posY=0;
+                    paso=20;
+                
+
+                    portfolioDetailImgArray.forEach((img) => {
+                        console.log(img.getAttribute('data-value'));
+                        
+                        if(posX==0){
+                            gsap.to(img, { duration: 1.5, x:posX+ 60,y:posY+60,zIndex:0 ,});
+                        }
+                        else {
+                            //img.style.display = 'none';
+                            gsap.to(img, { duration: 1.5, x:posX -20,y:posY-20,zIndex:80-posX});
+                        }
+                        posX+=paso;
+                        posY+=paso;
+                    });
+                    const firstImg = portfolioDetailImgArray[0];
+                    portfolioDetailImgArray.shift();
+                    portfolioDetailImgArray.push(firstImg);
+                }
+
+
+
+            });
+        });
+
+
+        }
+    else {
+        const images = document.querySelectorAll('.portfolio-image');
+        const detailsElements = document.querySelectorAll('.portfolio-detail-item');
+
+        const detailsMap: { [key: string]: HTMLElement } = {};
+        detailsElements.forEach(detail => {
+            const dataValue = detail.getAttribute('data-value');
+            if(dataValue){
+                detailsMap[dataValue] = detail as HTMLElement;
+            }
+        });
+
+        images.forEach(image => {
+            const imageContainer = image.closest('.portfolio-image-container');
+            const imageValue = imageContainer?.getAttribute('data-value');
+            let correspondingDetail; 
+            if(imageValue){
+                correspondingDetail = detailsMap[imageValue];
+            }
+            if (correspondingDetail) {
+                const imageClone = image.cloneNode(true);
+                correspondingDetail.appendChild(imageClone);
+                imageContainer?.remove(); // Elimina el contenedor de la imagen original, incluida la imagen
+            }
+        });
+    }
+
+
+
+</script>
 
 <style>
     #portfolio-section{
@@ -208,7 +214,7 @@ else {
         }
 
         .portfolio-detail-item{
-            width: 75%;
+           
  
         }
         .portfolio-image{

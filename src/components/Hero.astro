@@ -27,8 +27,8 @@ const { title, subtitle } = Astro.props;
     </div>
 </section>
 <script>
-        import { gsap } from 'https://cdn.skypack.dev/gsap';
-    import { ScrollTrigger } from 'https://cdn.skypack.dev/gsap/ScrollTrigger';
+    import { gsap } from "gsap";
+    import ScrollTrigger from "gsap/ScrollTrigger";
     gsap.registerPlugin(ScrollTrigger);
     gsap.from('.hero-img', {
         scrollTrigger: {

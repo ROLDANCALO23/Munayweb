@@ -1,8 +1,4 @@
 ---
-import { Image } from 'astro:assets';
-import BuildImg from '../assets/images/buildweb.png';
-
-
 let services=[{
     title: 'Diseño Responsivo',
     imgurl: '/images/servicio1.png',
@@ -33,9 +29,27 @@ let services=[{
 }]
 
 ---
-<script type="module">
-    import { gsap } from 'https://cdn.skypack.dev/gsap';
-    import { ScrollTrigger } from 'https://cdn.skypack.dev/gsap/ScrollTrigger';
+<section id="services-section">
+    <div class="servicios-container">
+        <h1 class="servicio-title-main">Standares</h1>
+        <ul class="servicios-list">
+        { 
+            services.map(service => 
+              <li class="servicios-item">
+                <img src={service.imgurl} class="servicios-img" alt=""/>
+                <h2 class="servicios-title">{service.title}</h2>
+                <p class="servicios-description">{service.description}</p>
+              </li>
+            )
+        }
+        </ul>
+    </div>
+</section>
+
+<script >
+    import { gsap } from "gsap";
+    import ScrollTrigger from "gsap/ScrollTrigger";
+    
     gsap.registerPlugin(ScrollTrigger);
     gsap.from('.servicios-item', {
         scrollTrigger: {
@@ -67,23 +81,8 @@ let services=[{
         })
     });
 
+
 </script>
-<section id="services-section">
-    <div class="servicios-container">
-        <h1 class="servicio-title-main">Standares</h1>
-        <ul class="servicios-list">
-        { 
-            services.map(service => 
-              <li class="servicios-item">
-                <img src={service.imgurl} class="servicios-img" alt="">
-                <h2 class="servicios-title">{service.title}</h2>
-                <p class="servicios-description">{service.description}</p>
-              </li>
-            )
-        }
-        </ul>
-      </div>
-</section>
 
 <style>
     #services-section {
