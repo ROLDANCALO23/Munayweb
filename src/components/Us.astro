@@ -1,84 +1,100 @@
 ---
 import { Image } from "astro:assets";
-import UsImg from '../assets/images/us.jpg';
-
+import UsImg from "../assets/images/us.jpg";
 ---
 
 <section id="us-section">
     <div class="us-container">
         <div class="us-container">
             <div class="us-content">
-              <Image src={UsImg} alt="Munay Web developers" class="us-img" width=520 />
-              <p class="us-text">
-                En <strong>Munay Web </strong>, somos un equipo de profesionales 
-                dedicados al <strong>desarrollo web</strong>, comprometidos a brindarte servicios 
-                de calidad personalizados según tus necesidades.
-              </p>
+                <Image
+                    src={UsImg}
+                    alt="Munay Web developers"
+                    class="us-img"
+                    width="520"
+                />
+                <p class="us-text">
+                    En <strong>Munay Web </strong>, somos un equipo de
+                    profesionales dedicados al <strong>desarrollo web</strong>,
+                    comprometidos a brindarte servicios de calidad
+                    personalizados según tus necesidades.
+                </p>
             </div>
-          </div>
+        </div>
     </div>
 </section>
 <script>
-    import { gsap } from "gsap";
-    import { ScrollTrigger } from "gsap/ScrollTrigger";
-    gsap.registerPlugin(ScrollTrigger);
-    function animateForDesktop () {
-        gsap.from('.us-text', {
-        scrollTrigger: {
-            trigger: '.us-text',
-            start: 'top 80%',
-            end: 'bottom 60%',
-            toggleActions: 'play none none none',
-        },
-        x: 120,
-        opacity: 0,
-        duration: 1.5,
-    });
-    gsap.from('.us-img', {
-        scrollTrigger: {
-            trigger: '.us-img',
-            start: 'top 80%',
-            end: 'bottom 60%',
-            toggleActions: 'play none none none',
-        },
-        x: -120,
-        opacity: 0,
-        duration: 1.5,
-    });
-     }
+    function animateForDesktop() {
+        const usText = document.querySelector(".us-text") as HTMLElement;
+        const usImg = document.querySelector(".us-img") as HTMLElement;
 
+        if (!usText || !usImg) return;
+
+        const observerOptions = {
+            rootMargin: "0px",
+            threshold: 0.2,
+        };
+
+        const observerText = new IntersectionObserver((entries, observer) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    usText.style.transition = "transform 1.5s, opacity 1.5s";
+                    usText.style.transform = "translateX(120px)";
+                    usText.style.opacity = "1";
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        const observerImg = new IntersectionObserver((entries, observer) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    usImg.style.transition = "transform 1.5s, opacity 1.5s";
+                    usImg.style.transform = "translateX(-120px)";
+                    usImg.style.opacity = "1";
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        observerText.observe(usText);
+        observerImg.observe(usImg);
+    }
 
     function animateForMobile() {
-        gsap.from('.us-text', {
-            y: 120,
-            opacity: 0,
-            duration: 1.5,
-            scrollTrigger: {
-            trigger: '.us-img',
-            start: 'top 80%',
-            end: 'bottom 60%',
-            toggleActions: 'play none none none',
-        }
-            
-            
-        });
-        gsap.from('.us-img', {
-            y: -120,
-            opacity: 0,
-            zIndex: 10,
-            duration: 1.5,
-            scrollTrigger: {
-            trigger: '.us-img',
-            start: 'top 80%',
-            end: 'bottom 60%',
-            toggleActions: 'play none none none',
+        const usText = document.querySelector(".us-text") as HTMLElement;
+        const usImg = document.querySelector(".us-img") as HTMLElement;
 
-        }
-            
-            
-        });
+        if (!usText || !usImg) return;
+
+        const observerOptions = {
+            rootMargin: "0px",
+            threshold: 0.2,
+        };
+
+        const observerText = new IntersectionObserver((entries, observer) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    usText.classList.add("visible");
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        const observerImg = new IntersectionObserver((entries, observer) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    usImg.classList.add("visible");
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        observerText.observe(usText);
+        observerImg.observe(usImg);
     }
-    if (window.matchMedia("(max-width: 767px)").matches) {
+    const mediaQuery = window.matchMedia("(max-width: 767px)");
+    if (mediaQuery.matches) {
         animateForMobile();
     } else {
         animateForDesktop();
@@ -86,12 +102,17 @@ import UsImg from '../assets/images/us.jpg';
 </script>
 
 <style>
+    .us-text,
+    .us-img {
+        z-index: 10;
+    }
+
     #us-section {
         background-color: var(--primary-color);
         width: 100%;
         max-width: 100%;
     }
-    .us-content{
+    .us-content {
         display: flex;
         flex-wrap: wrap;
         flex-direction: row;
@@ -99,27 +120,75 @@ import UsImg from '../assets/images/us.jpg';
         justify-content: center;
         padding: 30px;
     }
-    .us-text{
+    .us-text {
         color: var(--ternary-color);
         font-size: 1.5rem;
         text-align: justify;
-        width:35% ;
+        width: 35%;
         margin-right: 120px;
     }
+
     @media (max-width: 975px) {
-        .us-text{
+        .us-text {
             width: 100%;
             margin-right: 0px;
-
         }
-        
     }
-    @media  (max-width: 767px) {
-        .us-img{
-            width: 100%;
-            height: 100%;
-            z-index: 10;
+
+    @media (max-width: 767px) {
+        @media (max-width: 767px) {
+            .us-img {
+                width: 100%;
+                height: auto;
+            }
+            .us-container {
+                position: relative;
+                width: 100%;
+                height: auto;
+                overflow: hidden;
+            }
+
+            .us-text,
+            .us-img {
+                position: relative;
+                z-index: 10;
+            }
+
+            .us-text {
+                bottom: 0;
+                transform: translateY(20%);
+            }
+
+            .us-img {
+                top: 0;
+                transform: translateY(-20%);
+            }
+
+            @keyframes slideAnimationTextMobile {
+                0% {
+                    transform: translateY(50%);
+                }
+                100% {
+                    transform: translateY(0);
+                }
+            }
+
+            @keyframes slideAnimationImgMobile {
+                0% {
+                    transform: translateY(-50%);
+                }
+                100% {
+                    transform: translateY(0);
+                }
+            }
+
+            .us-text.visible {
+                animation: slideAnimationTextMobile 1.5s ease forwards;
+            }
+
+            .us-img.visible {
+                animation: slideAnimationImgMobile 1.5s ease forwards;
+            }
         }
-        
     }
 </style>
