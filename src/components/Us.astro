@@ -39,7 +39,7 @@ import UsImg from "../assets/images/us.jpg";
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
                     usText.style.transition = "transform 1.5s, opacity 1.5s";
-                    usText.style.transform = "translateX(120px)";
+                    usText.style.transform = "translateX(-90px)";
                     usText.style.opacity = "1";
                     observer.unobserve(entry.target);
                 }
@@ -50,7 +50,7 @@ import UsImg from "../assets/images/us.jpg";
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
                     usImg.style.transition = "transform 1.5s, opacity 1.5s";
-                    usImg.style.transform = "translateX(-120px)";
+                    usImg.style.transform = "translateX(90px)";
                     usImg.style.opacity = "1";
                     observer.unobserve(entry.target);
                 }
@@ -93,7 +93,7 @@ import UsImg from "../assets/images/us.jpg";
         observerText.observe(usText);
         observerImg.observe(usImg);
     }
-    const mediaQuery = window.matchMedia("(max-width: 767px)");
+    const mediaQuery = window.matchMedia("(max-width: 1150px)");
     if (mediaQuery.matches) {
         animateForMobile();
     } else {
@@ -105,6 +105,7 @@ import UsImg from "../assets/images/us.jpg";
     .us-text,
     .us-img {
         z-index: 10;
+        opacity: 0.5
     }
 
     #us-section {
@@ -117,7 +118,7 @@ import UsImg from "../assets/images/us.jpg";
         flex-wrap: wrap;
         flex-direction: row;
         align-items: center;
-        justify-content: center;
+       justify-content: space-between;
         padding: 30px;
     }
     .us-text {
@@ -152,16 +153,19 @@ import UsImg from "../assets/images/us.jpg";
             .us-img {
                 position: relative;
                 z-index: 10;
+                opacity: 1;
             }
 
             .us-text {
                 bottom: 0;
                 transform: translateY(20%);
+                opacity: 1;
             }
 
             .us-img {
                 top: 0;
                 transform: translateY(-20%);
+                opacity: 1;
             }
 
             @keyframes slideAnimationTextMobile {
