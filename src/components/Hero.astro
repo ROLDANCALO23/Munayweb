@@ -29,18 +29,21 @@ const { title, subtitle } = Astro.props;
 <script>
     import { gsap } from "gsap";
     import ScrollTrigger from "gsap/ScrollTrigger";
-    gsap.registerPlugin(ScrollTrigger);
-    gsap.from('.hero-img', {
-        scrollTrigger: {
-            trigger: '.hero-main',
-            start: 'top 80%',
-            end: 'bottom 20%',
-            toggleActions: 'play none none none'
-        },
-        opacity: 0,
-        x: 100,
-        duration: 1.5
-    });
+
+
+        gsap.registerPlugin(ScrollTrigger);
+        gsap.from('.hero-img', {
+            scrollTrigger: {
+                trigger: '.hero-main',
+                start: 'top 80%',
+                end: 'bottom 20%',
+                toggleActions: 'play none none none'
+            },
+            opacity: 0,
+            scale:0.5,
+            duration: 1.5,
+            ease: "power1.out"
+        });
 </script>
 <style>
     #hero-section{
@@ -94,6 +97,7 @@ const { title, subtitle } = Astro.props;
         {
             font-size: 1.2rem;
         }
+
     }
     @media (max-width: 850px)
     {

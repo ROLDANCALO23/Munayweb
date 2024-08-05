@@ -21,7 +21,56 @@ const { items } = Astro.props;
     </ul>
 </nav>
 
+<script>
+    // Asumiendo que estos estilos ya están definidos en algún lugar de tu CSS
+    const menu: HTMLElement | null = document.querySelector('.header-links');
+    const barsIcon: HTMLElement | null = document.querySelector('.bars-icon');
+    const cancelIcon: HTMLElement | null = document.querySelector('.cancel-icon');
+    const headerMenuMobile: HTMLElement | null = document.querySelector('.header-menu-mobile');
+    let isMenuOpen: boolean = false;
 
+    menu?.classList.add('menu-hidden');
+    headerMenuMobile?.addEventListener('click', toggleMenu);
+
+    function toggleMenu(): void {
+        if (!menu || !barsIcon || !cancelIcon) {
+            console.error('One or more elements were not found!');
+            return;
+        }
+
+        if (isMenuOpen) {
+            // Aplicar estilos para "cerrar" el menú
+            menu.classList.add('menu-hidden');
+            menu.classList.remove('menu-visible');
+
+            barsIcon.classList.remove('hidden');
+            cancelIcon.classList.add('hidden');
+
+            // Espera 0.5 segundos para cambiar la visibilidad de los iconos, si es necesario
+            setTimeout(() => {
+                barsIcon.classList.add('visible');
+                cancelIcon.classList.remove('visible');
+            }, 500);
+        } else {
+            // Aplicar estilos para "abrir" el menú
+            menu.classList.remove('menu-hidden');
+            menu.classList.add('menu-visible');
+
+            barsIcon.classList.add('hidden');
+            cancelIcon.classList.remove('hidden');
+
+            setTimeout(() => {
+                barsIcon.classList.remove('visible');
+                cancelIcon.classList.add('visible');
+            }, 500);
+        }
+
+        isMenuOpen = !isMenuOpen;
+    }
+
+
+
+</script>
 <style>
 .header-nav {
     display: block;
@@ -53,7 +102,6 @@ const { items } = Astro.props;
     .header-links{
         position: absolute;
         left: 0;
-        display:none; 
         width: 100%;
         margin-top: 45px;
         flex-direction: column;
@@ -64,6 +112,19 @@ const { items } = Astro.props;
     .header-links ul li{
         width: 100%;
         margin: 15px 15px;
+    }
+
+    .header-links.menu-visible {
+    height: auto;
+    opacity: 1;
+    display: flex;
+    background: var(--secondary-color);
+    }
+
+    .header-links.menu-hidden {
+        height: 0;
+        opacity: 0;
+        display: none;
     }
 }
 </style>

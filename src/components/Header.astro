@@ -44,6 +44,12 @@ let menuItems=[{
 
 </header>
 <script>
+    // Escucha el evento de scroll en la ventana
+    window.addEventListener('scroll', applyStylesOnScroll);
+
+    // Aplica los estilos iniciales al cargar la página
+    applyStylesOnScroll();
+
 // Función para aplicar estilos cuando se cumplan las condiciones de scroll
 function applyStylesOnScroll(): void {
         const header = document.querySelector('.header') as HTMLElement;
@@ -55,7 +61,7 @@ function applyStylesOnScroll(): void {
 
         // Calcula el punto de inicio y fin basado en la altura del elemento
         const start: number = 0; // top top
-        const end: number = headerHeight; // bottom top
+        const end: number = headerHeight-30; // bottom top
 
         // Aplica estilos si la posición del scroll está entre el inicio y el fin
         if (scrollTop >= start && scrollTop <= end) {
@@ -70,96 +76,18 @@ function applyStylesOnScroll(): void {
         }
     }
 
-    // Escucha el evento de scroll en la ventana
-    window.addEventListener('scroll', applyStylesOnScroll);
-
-    // Aplica los estilos iniciales al cargar la página
-    applyStylesOnScroll();
-
-// Asumiendo que estos estilos ya están definidos en algún lugar de tu CSS
-const menu: HTMLElement | null = document.querySelector('.header-links');
-const barsIcon: HTMLElement | null = document.querySelector('.bars-icon');
-const cancelIcon: HTMLElement | null = document.querySelector('.cancel-icon');
-const headerMenuMobile: HTMLElement | null = document.querySelector('.header-menu-mobile');
-
-let isMenuOpen: boolean = false;
-
-function toggleMenu(): void {
-    if (!menu || !barsIcon || !cancelIcon) {
-        console.error('One or more elements were not found!');
-        return;
-    }
-
-    if (isMenuOpen) {
-        // Aplicar estilos para "cerrar" el menú
-        menu.classList.add('menu-hidden');
-        menu.classList.remove('menu-visible');
-
-        barsIcon.classList.remove('hidden');
-        cancelIcon.classList.add('hidden');
-
-        // Espera 0.5 segundos para cambiar la visibilidad de los iconos, si es necesario
-        setTimeout(() => {
-            barsIcon.classList.add('visible');
-            cancelIcon.classList.remove('visible');
-        }, 500);
-    } else {
-        // Aplicar estilos para "abrir" el menú
-        menu.classList.remove('menu-hidden');
-        menu.classList.add('menu-visible');
-
-        barsIcon.classList.add('hidden');
-        cancelIcon.classList.remove('hidden');
-
-        setTimeout(() => {
-            barsIcon.classList.remove('visible');
-            cancelIcon.classList.add('visible');
-        }, 500);
-    }
-
-    isMenuOpen = !isMenuOpen;
-}
-
-if (headerMenuMobile !== null) {
-    headerMenuMobile.addEventListener('click', toggleMenu);
-}
-
-    //cambiar el toogleMenu cuando el view es mayor a 850px mostrar el menu y ocualtar el barsicon y el cancel icon
-    window.addEventListener('resize', () => {
-    // Asegúrate de que los elementos existen en el DOM antes de intentar acceder a ellos.
-    const menu: HTMLElement | null = document.querySelector('.menu');
-    const barsIcon: HTMLElement | null = document.querySelector('.bars-icon');
-    const cancelIcon: HTMLElement | null = document.querySelector('.cancel-icon');
-
-    // Verifica que los elementos necesarios existan.
-    if (!menu || !barsIcon || !cancelIcon) {
-        console.error("One or more elements are missing!");
-        return;
-    }
-
-    if (window.innerWidth > 850) {
-        // Aplica estilos directamente para mostrar el menú
-        menu.style.height = 'auto';
-        menu.style.opacity = '1';
-        menu.style.display = 'flex';
-
-        // Oculta los iconos
-        barsIcon.style.display = 'none';
-        cancelIcon.style.display = 'none';
-    } else {
-        // Aplica estilos directamente para ocultar el menú
-        menu.style.height = '0';
-        menu.style.opacity = '0';
-        menu.style.display = 'none';
-
-        // Muestra el icono de barras y oculta el icono de cancelar
-        barsIcon.style.display = 'block';
-        cancelIcon.style.display = 'none';
-    }
-});
 </script>
 
 <style>
+.visible {
+    display: block;
+}
+
+.hidden {
+    display: none;
+}
+
+
 header{
     display: flex;
     justify-content: center;
@@ -215,6 +143,8 @@ header{
 .x-icon:hover{
     color: #E1306C;
 }
+
+
 
 .header-image{
         width: 130px;
